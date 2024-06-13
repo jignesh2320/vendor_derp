@@ -44,3 +44,14 @@ ifneq ($(OVERRIDE_OTA_CHANNEL),)
 PRODUCT_SYSTEM_PROPERTIES += \
     derp.updater.uri=$(OVERRIDE_OTA_CHANNEL)
 endif
+
+# Signing
+ifeq (user,$(TARGET_BUILD_VARIANT))
+ifneq (,$(wildcard vendor/derp/signing/keys/releasekey.pk8))
+PRODUCT_DEFAULT_DEV_CERTIFICATE := vendor/derp/signing/keys/releasekey
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.oem_unlock_supported=1
+endif
+ifneq (,$(wildcard vendor/derp/signing/keys/otakey.x509.pem))
+PRODUCT_OTA_PUBLIC_KEYS := vendor/derp/signing/keys/otakey.x509.pem
+endif
+endif
